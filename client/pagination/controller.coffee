@@ -1,35 +1,25 @@
-ORGANIZATION_1 = name : "McDonald's"
-ORGANIZATION_2 = name : 'Twitter'
-ORGANIZATION_3 = name : 'Google'
-ORGANIZATION_4 = name : 'Github'
-ORGANIZATION_5 = name : 'Netflix'
-
-ORGANIZATIONS = [
-  ORGANIZATION_1,
-  ORGANIZATION_2,
-  ORGANIZATION_3,
-  ORGANIZATION_4,
-  ORGANIZATION_5
-]
-
 ITEMS_PER_PAGE = 2
 
 angular
 .module 'pagination.demo', []
-.controller 'PaginationCtrl', ($scope, person) ->
+.controller 'PaginationCtrl', ($scope, person, organization) ->
   allPeople           = null
-  defaultOrganization = ORGANIZATIONS[0]
 
-  $scope.organization  = defaultOrganization
-  $scope.organizations = ORGANIZATIONS
+  organization
+  .get()
+  .then (organizations) ->
+    defaultOrganization = organizations[0]
 
-  person
-  .findRemote organization: defaultOrganization.name
-  .then (people) ->
-    allPeople = people
+    $scope.organization  = defaultOrganization
+    $scope.organizations = organizations
 
-    $scope.totalItems = allPeople.length
-    $scope.people     = _(allPeople).take(ITEMS_PER_PAGE).value()
+    person
+    .findRemote organization: defaultOrganization.name
+    .then (people) ->
+      allPeople = people
+
+      $scope.totalItems = allPeople.length
+      $scope.people     = _(allPeople).take(ITEMS_PER_PAGE).value()
 
   $scope.itemsPerPage = ITEMS_PER_PAGE
   $scope.maxSize      = 5
