@@ -1,0 +1,24 @@
+doctype html
+html
+  head
+    title My Protractor Trials
+    <!-- inject:css -->
+    <!-- endinject -->
+  body(ng-app="app")
+    div(ng-controller="PaginationCtrl")
+      #organization-options
+        select(ng-model="organization", ng-options="org as org.name for org in organizations", ng-change="organizationChange()")
+      pagination.pagination-sm(total-items="totalItems", items-per-page="itemsPerPage", ng-model="currentPage", ng-change="pageChange()", max-size="maxSize" boundary-links="true")
+      table.table.table-striped(st-table="people")
+        thead
+        tr
+          th(st-sort="firstName") first name
+          th last name
+          th social security number
+        tbody
+        tr(ng-repeat="person in people")
+          td {{person.firstName}}
+          td {{person.lastName}}
+          td {{person.socialSecurityNumber}}
+    <!-- inject:js -->
+    <!-- endinject -->
