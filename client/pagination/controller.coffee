@@ -2,24 +2,20 @@ ITEMS_PER_PAGE = 2
 
 angular
 .module 'pagination.demo', []
-.controller 'PaginationCtrl', ($scope, person, organization) ->
+.controller 'PaginationCtrl', ($scope, person, organizations) ->
   allPeople           = null
+  defaultOrganization = organizations[0]
 
-  organization
-  .get()
-  .then (organizations) ->
-    defaultOrganization = organizations[0]
+  $scope.organization  = defaultOrganization
+  $scope.organizations = organizations
 
-    $scope.organization  = defaultOrganization
-    $scope.organizations = organizations
+  person
+  .findRemote organization: defaultOrganization.name
+  .then (people) ->
+    allPeople = people
 
-    person
-    .findRemote organization: defaultOrganization.name
-    .then (people) ->
-      allPeople = people
-
-      $scope.totalItems = allPeople.length
-      $scope.people     = _(allPeople).take(ITEMS_PER_PAGE).value()
+    $scope.totalItems = allPeople.length
+    $scope.people     = _(allPeople).take(ITEMS_PER_PAGE).value()
 
   $scope.itemsPerPage = ITEMS_PER_PAGE
   $scope.maxSize      = 5
