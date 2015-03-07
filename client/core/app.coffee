@@ -16,5 +16,3 @@ angular
     controller: 'PaginationCtrl'
     resolve:
       organizations: (organization) -> organization.get()
-
-
